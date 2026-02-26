@@ -1,0 +1,35 @@
+{
+  "name": "Miguel Ángel Álvarez Silva",
+  "subtitle": "Soy Miguel Angel Alvarez Silva, actualmente curso la carrera de inegeneria civil, y decidi empezar esta web como parte de un proyecto personal en el que comparto mis opiniones sobre distintos temas",
+  "bio": "Soy Miguel Angel Alvarez Silva, actualmente curso la carrera de inegeneria civil, y decidi empezar esta web como parte de un proyecto personal en el que comparto mis opiniones sobre distintos temas",
+  "slides": [
+    {
+      "id": "1772085633019-5hg9v",
+      "src": "/uploads/win-20241023-07-04-52-pro-1772085632988.jpg",
+      "type": "image",
+      "caption": "",
+      "order": 0
+    },
+    {
+      "id": "1772085672080-q4tc6",
+      "src": "/uploads/134018462739754492-1772085672051.jpg",
+      "type": "image",
+      "caption": "",
+      "order": 1
+    },
+    {
+      "id": "1772085676642-ce20k",
+      "src": "/uploads/134045415651999376-1772085676617.jpg",
+      "type": "image",
+      "caption": "",
+      "order": 2
+    },
+    {
+      "id": "1772085680567-9lgav",
+      "src": "/uploads/134059129529859671-1772085680536.jpg",
+      "type": "image",
+      "caption": "",
+      "order": 3
+    }
+  ]
+}

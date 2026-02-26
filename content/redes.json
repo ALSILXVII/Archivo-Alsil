@@ -1,0 +1,50 @@
+[
+  {
+    "id": "twitter",
+    "name": "X (Twitter)",
+    "url": "",
+    "description": "Opiniones y debates en tiempo real",
+    "enabled": true,
+    "order": 0
+  },
+  {
+    "id": "instagram",
+    "name": "Instagram",
+    "url": "",
+    "description": "Contenido visual y stories",
+    "enabled": true,
+    "order": 1
+  },
+  {
+    "id": "youtube",
+    "name": "YouTube",
+    "url": "",
+    "description": "Videos, análisis y ensayos",
+    "enabled": false,
+    "order": 2
+  },
+  {
+    "id": "tiktok",
+    "name": "TikTok",
+    "url": "",
+    "description": "Clips cortos y tendencias",
+    "enabled": false,
+    "order": 3
+  },
+  {
+    "id": "spotify",
+    "name": "Spotify",
+    "url": "",
+    "description": "Playlists y podcast",
+    "enabled": false,
+    "order": 4
+  },
+  {
+    "id": "threads",
+    "name": "Threads",
+    "url": "",
+    "description": "Conversaciones y comunidad",
+    "enabled": false,
+    "order": 5
+  }
+]
