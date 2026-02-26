@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
 
 // La contraseña se configura en la variable de entorno ADMIN_PASSWORD
 // Si no está configurada, usa esta por defecto (CÁMBIALA en producción)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'ArchivoAlsil2026';
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'alsil-secret-key-change-me';
 
-function generateToken(): string {
+async function generateToken(): Promise<string> {
   const payload = `admin:${Date.now()}:${TOKEN_SECRET}`;
-  return crypto.createHash('sha256').update(payload).digest('hex');
+  const encoder = new TextEncoder();
+  const data = encoder.encode(payload);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 export function validateToken(token: string): boolean {
@@ -22,7 +25,7 @@ export async function POST(req: NextRequest) {
     const { password } = await req.json();
 
     if (password === ADMIN_PASSWORD) {
-      const token = generateToken();
+      const token = await generateToken();
 
       const response = NextResponse.json({ success: true });
       response.cookies.set('admin_token', token, {
