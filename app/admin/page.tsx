@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type PostItem = {
   title: string;
@@ -18,6 +19,12 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await fetch('/api/auth', { method: 'DELETE' });
+    router.push('/login');
+  };
 
   const fetchPosts = async () => {
     try {
@@ -61,6 +68,12 @@ export default function AdminPage() {
             <Link href="/" className="text-zinc-400 hover:text-amber-400 text-sm transition">
               ← Volver al sitio
             </Link>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 rounded-lg bg-red-600/80 text-white font-semibold hover:bg-red-500 transition text-sm"
+            >
+              Cerrar sesión
+            </button>
             <Link
               href="/admin/hero"
               className="px-5 py-2 rounded-lg bg-purple-600/90 text-white font-semibold hover:bg-purple-500 transition text-sm"
