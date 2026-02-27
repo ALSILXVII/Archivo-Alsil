@@ -2,6 +2,8 @@ import Layout from '../../components/Layout';
 import PostCard from '../../components/PostCard';
 import { getAllPosts } from '../../utils/posts';
 
+export const dynamic = 'force-dynamic';
+
 export default function ArchivoPage() {
   const posts = getAllPosts();
 

@@ -4,6 +4,8 @@ import HeroCarousel from '../components/HeroCarousel';
 import ProfileBanner from '../components/ProfileBanner';
 import { getAllPosts, getFeaturedPosts, getRecentPosts } from '../utils/posts';
 
+export const dynamic = 'force-dynamic';
+
 function slugify(text: string): string {
   return text
     .toLowerCase()
