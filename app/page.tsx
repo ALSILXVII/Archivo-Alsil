@@ -59,7 +59,7 @@ export default function Home() {
             <div className="flex-1 min-w-0">
               <HeroCarousel />
             </div>
-            <div className="md:w-[280px] lg:w-[320px] shrink-0 min-h-[280px] md:min-h-0">
+            <div className="w-full h-[300px] md:w-[280px] lg:w-[320px] md:h-auto shrink-0">
               <ProfileBanner />
             </div>
           </div>
