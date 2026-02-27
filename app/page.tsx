@@ -32,9 +32,9 @@ export default function Home() {
   const recent = getRecentPosts();
   return (
     <Layout>
-      <div className="flex flex-col lg:flex-row gap-8 animate-fade-in-up">
-        {/* Sidebar / Author block */}
-        <aside className="lg:w-[260px] w-full shrink-0 lg:sticky lg:top-20 lg:self-start space-y-5">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 animate-fade-in-up">
+        {/* Sidebar / Author block - appears after content on mobile */}
+        <aside className="order-2 lg:order-1 lg:w-[260px] w-full shrink-0 lg:sticky lg:top-20 lg:self-start space-y-5">
           <div className="bg-zinc-900/40 backdrop-blur-sm rounded-2xl p-6 border border-zinc-800/40 flex flex-col items-center space-y-4">
             <img src="/uploads/logo.png" alt="Archivo ALSIL" className="w-20 h-20 rounded-full border-2 border-amber-600/25 ring-1 ring-emerald-700/15 transition-all duration-300 hover:shadow-[0_0_20px_4px_rgba(16,185,129,0.1)] hover:scale-105" />
             <div className="text-amber-200/80 font-semibold text-center text-sm">Archivo ALSIL</div>
@@ -52,8 +52,8 @@ export default function Home() {
           </div>
         </aside>
 
-        {/* Main content */}
-        <div className="flex-1 min-w-0 space-y-10">
+        {/* Main content - appears first on mobile */}
+        <div className="order-1 lg:order-2 flex-1 min-w-0 space-y-8 sm:space-y-10">
           {/* Hero + Profile Banners */}
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 min-w-0">

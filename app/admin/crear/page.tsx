@@ -202,12 +202,12 @@ export default function CrearPostPage() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       {/* Header */}
-      <header className="border-b border-zinc-800 py-4 px-6">
+      <header className="border-b border-zinc-800 py-3 sm:py-4 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-semibold tracking-widest font-serif text-zinc-100">
+          <Link href="/" className="text-lg sm:text-xl font-semibold tracking-widest font-serif text-zinc-100">
             Archivo ALSIL
           </Link>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 sm:gap-4 items-center">
             <button
               onClick={() => setPreview(!preview)}
               className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-300 hover:bg-zinc-800 transition text-sm"
@@ -234,9 +234,9 @@ export default function CrearPostPage() {
         </div>
       )}
 
-      <div className="max-w-6xl mx-auto px-6 py-8 flex gap-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col lg:flex-row gap-6 lg:gap-8">
         {/* Main Content Area */}
-        <div className="flex-1 space-y-6">
+        <div className="flex-1 min-w-0 space-y-6">
           {/* Title */}
           <input
             type="text"
@@ -442,7 +442,7 @@ export default function CrearPostPage() {
           {uploads.length > 0 && (
             <div className="space-y-3">
               <label className="text-xs text-zinc-500 font-semibold uppercase tracking-wider">Archivos subidos</label>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {uploads.map((file, i) => (
                   <div
                     key={i}
@@ -466,7 +466,7 @@ export default function CrearPostPage() {
         </div>
 
         {/* Sidebar - Metadata */}
-        <aside className="w-72 space-y-6">
+        <aside className="w-full lg:w-72 space-y-6">
           {/* Category */}
           <div className="space-y-2">
             <label className="text-xs text-zinc-500 font-semibold uppercase tracking-wider">Categoría</label>

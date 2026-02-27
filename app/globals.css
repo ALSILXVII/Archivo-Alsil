@@ -66,4 +66,37 @@ a {
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Mobile touch optimization */
+@media (max-width: 768px) {
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Tap targets - minimum 44px */
+  button, a, input, select, textarea {
+    min-height: 44px;
+  }
+
+  /* Better font size on small screens */
+  .font-editorial {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* Prevent images from overflowing */
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Safe area for notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  footer {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
 }

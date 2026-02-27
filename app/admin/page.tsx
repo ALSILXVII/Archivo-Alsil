@@ -59,54 +59,60 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <header className="border-b border-zinc-800 py-4 px-6">
-        <div className="max-w-5xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-semibold tracking-widest font-serif text-zinc-100">
-            Archivo ALSIL
-          </Link>
-          <div className="flex gap-4 items-center">
-            <Link href="/" className="text-zinc-400 hover:text-amber-400 text-sm transition">
-              ← Volver al sitio
+      <header className="border-b border-zinc-800 py-4 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto space-y-4">
+          {/* Top bar */}
+          <div className="flex justify-between items-center">
+            <Link href="/" className="text-lg sm:text-xl font-semibold tracking-widest font-serif text-zinc-100">
+              Archivo ALSIL
             </Link>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 rounded-lg bg-red-600/80 text-white font-semibold hover:bg-red-500 transition text-sm"
-            >
-              Cerrar sesión
-            </button>
+            <div className="flex gap-2 items-center">
+              <Link href="/" className="text-zinc-400 hover:text-amber-400 text-xs sm:text-sm transition">
+                ← Volver
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-red-600/80 text-white font-semibold hover:bg-red-500 transition text-xs sm:text-sm"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
+          {/* Admin nav buttons - grid for mobile */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
             <Link
               href="/admin/hero"
-              className="px-5 py-2 rounded-lg bg-purple-600/90 text-white font-semibold hover:bg-purple-500 transition text-sm"
+              className="px-3 py-2 rounded-lg bg-purple-600/90 text-white font-semibold hover:bg-purple-500 transition text-xs text-center"
             >
               🖼️ Banner
             </Link>
             <Link
               href="/admin/profile"
-              className="px-5 py-2 rounded-lg bg-cyan-600/90 text-white font-semibold hover:bg-cyan-500 transition text-sm"
+              className="px-3 py-2 rounded-lg bg-cyan-600/90 text-white font-semibold hover:bg-cyan-500 transition text-xs text-center"
             >
-              👤 Mi Perfil
+              👤 Perfil
             </Link>
             <Link
               href="/admin/autor"
-              className="px-5 py-2 rounded-lg bg-orange-600/90 text-white font-semibold hover:bg-orange-500 transition text-sm"
+              className="px-3 py-2 rounded-lg bg-orange-600/90 text-white font-semibold hover:bg-orange-500 transition text-xs text-center"
             >
               ✍️ Autor
             </Link>
             <Link
               href="/admin/redes"
-              className="px-5 py-2 rounded-lg bg-blue-600/90 text-white font-semibold hover:bg-blue-500 transition text-sm"
+              className="px-3 py-2 rounded-lg bg-blue-600/90 text-white font-semibold hover:bg-blue-500 transition text-xs text-center"
             >
               🌐 Redes
             </Link>
             <Link
               href="/admin/biblioteca"
-              className="px-5 py-2 rounded-lg bg-emerald-600/90 text-white font-semibold hover:bg-emerald-500 transition text-sm"
+              className="px-3 py-2 rounded-lg bg-emerald-600/90 text-white font-semibold hover:bg-emerald-500 transition text-xs text-center"
             >
               📚 Biblioteca
             </Link>
             <Link
               href="/admin/crear"
-              className="px-5 py-2 rounded-lg bg-amber-500 text-zinc-950 font-semibold hover:bg-amber-400 transition text-sm"
+              className="px-3 py-2 rounded-lg bg-amber-500 text-zinc-950 font-semibold hover:bg-amber-400 transition text-xs text-center col-span-2 sm:col-span-1 md:col-span-2"
             >
               + Nuevo Post
             </Link>
@@ -122,8 +128,8 @@ export default function AdminPage() {
         </div>
       )}
 
-      <div className="max-w-5xl mx-auto px-6 py-8">
-        <h1 className="text-2xl font-bold mb-8">Panel de Administración</h1>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <h1 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Panel de Administración</h1>
 
         {loading ? (
           <div className="text-zinc-500 text-center py-12">Cargando posts...</div>
@@ -144,33 +150,24 @@ export default function AdminPage() {
               .map(post => (
                 <div
                   key={post.slug}
-                  className="flex items-center justify-between p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-zinc-700 transition"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-zinc-700 transition gap-3"
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-1">
-                      <Link href={`/p/${post.slug}`} className="text-lg font-semibold text-zinc-200 hover:text-amber-400 transition">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-1 flex-wrap">
+                      <Link href={`/p/${post.slug}`} className="text-base sm:text-lg font-semibold text-zinc-200 hover:text-amber-400 transition truncate">
                         {post.title}
                       </Link>
                       {post.featured && (
-                        <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded">Destacado</span>
+                        <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded shrink-0">Destacado</span>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-zinc-500">
+                    <div className="flex items-center gap-2 sm:gap-3 text-xs text-zinc-500 flex-wrap">
                       <span>{post.date}</span>
                       <span>·</span>
                       <span>{post.category}</span>
-                      {post.tags.length > 0 && (
-                        <>
-                          <span>·</span>
-                          <span>{post.tags.join(', ')}</span>
-                        </>
-                      )}
                     </div>
-                    {post.excerpt && (
-                      <p className="text-sm text-zinc-500 mt-1 line-clamp-1">{post.excerpt}</p>
-                    )}
                   </div>
-                  <div className="flex gap-2 ml-4">
+                  <div className="flex gap-2 shrink-0">
                     <Link
                       href={`/p/${post.slug}`}
                       className="px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:bg-zinc-800 text-xs transition"
