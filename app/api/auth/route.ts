@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       const response = NextResponse.json({ success: true });
       response.cookies.set('admin_token', token, {
         httpOnly: true,
-        secure: false, // cambiar a true cuando tengas HTTPS
+        secure: true,
         sameSite: 'lax',
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 7 días
