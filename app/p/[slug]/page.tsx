@@ -1,8 +1,43 @@
+import type { Metadata } from 'next';
 import Layout from '../../../components/Layout';
 import Link from 'next/link';
 import { getPostBySlug, getAllPosts } from '../../../utils/posts';
 import CommentsSection from '../../../components/CommentsSection';
 import AuthorByline from '../../../components/AuthorByline';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) return { title: 'Post no encontrado' };
+
+  const description = post.excerpt || post.content.slice(0, 160).replace(/[#*\n]/g, '').trim();
+
+  return {
+    title: post.title,
+    description,
+    keywords: [post.category, ...post.tags],
+    alternates: {
+      canonical: `https://archivoalsil.com/p/${slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description,
+      url: `https://archivoalsil.com/p/${slug}`,
+      siteName: 'Archivo ALSIL',
+      type: 'article',
+      publishedTime: post.date,
+      authors: ['Miguel Ángel Álvarez Silva'],
+      locale: 'es_MX',
+      ...(post.cover ? { images: [{ url: post.cover, alt: post.title }] } : {}),
+    },
+    twitter: {
+      card: post.cover ? 'summary_large_image' : 'summary',
+      title: post.title,
+      description,
+      ...(post.cover ? { images: [post.cover] } : {}),
+    },
+  };
+}
 
 function slugify(text: string): string {
   return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -44,6 +79,29 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   return (
     <Layout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            description: post.excerpt || post.content.slice(0, 160).replace(/[#*\n]/g, '').trim(),
+            datePublished: post.date,
+            author: {
+              '@type': 'Person',
+              name: 'Miguel Ángel Álvarez Silva',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'Archivo ALSIL',
+              logo: { '@type': 'ImageObject', url: 'https://archivoalsil.com/uploads/logo.png' },
+            },
+            mainEntityOfPage: `https://archivoalsil.com/p/${slug}`,
+            ...(post.cover ? { image: `https://archivoalsil.com${post.cover}` } : {}),
+          }),
+        }}
+      />
       <article className="max-w-3xl mx-auto animate-fade-in-up">
         {/* Cover */}
         {post.cover && (
