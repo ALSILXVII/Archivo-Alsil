@@ -39,7 +39,8 @@ export async function GET() {
   try {
     const items = readData();
     return NextResponse.json(items);
-  } catch {
+  } catch (error) {
+    console.error('Error al leer la biblioteca:', error);
     return NextResponse.json({ error: 'Error al leer la biblioteca' }, { status: 500 });
   }
 }
@@ -61,10 +62,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No se envió ningún archivo' }, { status: 400 });
     }
 
-    // Validate PDF
-    if (file.type !== 'application/pdf') {
+    // Validate PDF (flexible: check MIME type OR file extension)
+    const validPdfTypes = ['application/pdf', 'application/x-pdf', 'application/octet-stream'];
+    const isPdf = validPdfTypes.includes(file.type) || file.name.toLowerCase().endsWith('.pdf');
+    if (!isPdf) {
       return NextResponse.json(
-        { error: 'Solo se permiten archivos PDF.' },
+        { error: `Solo se permiten archivos PDF. Tipo recibido: ${file.type || 'vacío'}` },
         { status: 400 }
       );
     }
@@ -133,8 +136,10 @@ export async function POST(request: NextRequest) {
     writeData(items);
 
     return NextResponse.json({ success: true, item }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: 'Error al subir el archivo' }, { status: 500 });
+  } catch (error) {
+    console.error('Error al subir archivo a biblioteca:', error);
+    const message = error instanceof Error ? error.message : 'Error desconocido';
+    return NextResponse.json({ error: `Error al subir el archivo: ${message}` }, { status: 500 });
   }
 }
 
@@ -168,7 +173,8 @@ export async function DELETE(request: NextRequest) {
     writeData(filtered);
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (error) {
+    console.error('Error al eliminar documento:', error);
     return NextResponse.json({ error: 'Error al eliminar documento' }, { status: 500 });
   }
 }
