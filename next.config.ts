@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  middlewareClientMaxBodySize: '100mb',
   experimental: {
     serverActions: {
       bodySizeLimit: '100mb',
