@@ -13,15 +13,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No se envió ningún archivo' }, { status: 400 });
     }
 
-    // Validate file type
+    // Validate file type (SVG excluded - can contain malicious JavaScript)
     const allowedTypes = [
-      'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
+      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
       'video/mp4', 'video/webm', 'video/ogg'
     ];
 
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Tipo de archivo no permitido. Solo imágenes (jpg, png, gif, webp, svg) y videos (mp4, webm, ogg).' },
+        { error: 'Tipo de archivo no permitido. Solo imágenes (jpg, png, gif, webp) y videos (mp4, webm, ogg).' },
         { status: 400 }
       );
     }

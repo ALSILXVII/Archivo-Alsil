@@ -4,6 +4,34 @@ import path from 'path';
 
 const commentsDir = path.join(process.cwd(), 'content', 'comments');
 
+// Rate limiting: max 5 comments per IP per minute
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 5;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
+// Sanitize slug to prevent path traversal
+function sanitizeSlug(slug: string): string | null {
+  const clean = slug.replace(/[^a-zA-Z0-9_-]/g, '');
+  if (!clean || clean !== slug) return null;
+  return clean;
+}
+
+// Strip HTML tags to prevent XSS
+function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, '').replace(/[<>]/g, '');
+}
+
 function ensureDir() {
   if (!fs.existsSync(commentsDir)) {
     fs.mkdirSync(commentsDir, { recursive: true });
@@ -40,10 +68,15 @@ type Comment = {
 // GET - Get comments for a post
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const slug = searchParams.get('slug');
+  const rawSlug = searchParams.get('slug');
 
-  if (!slug) {
+  if (!rawSlug) {
     return NextResponse.json({ error: 'Slug es requerido' }, { status: 400 });
+  }
+
+  const slug = sanitizeSlug(rawSlug);
+  if (!slug) {
+    return NextResponse.json({ error: 'Slug inválido' }, { status: 400 });
   }
 
   const comments = readComments(slug);
@@ -53,30 +86,48 @@ export async function GET(request: NextRequest) {
 // POST - Add a comment
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { slug, author, content, parentId } = body;
+    // Rate limiting
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+    if (isRateLimited(ip)) {
+      return NextResponse.json({ error: 'Demasiados comentarios. Intenta en un minuto.' }, { status: 429 });
+    }
 
-    if (!slug || !author?.trim() || !content?.trim()) {
+    const body = await request.json();
+    const { slug: rawSlug, author: rawAuthor, content: rawContent, parentId } = body;
+
+    if (!rawSlug || !rawAuthor?.trim() || !rawContent?.trim()) {
       return NextResponse.json(
         { error: 'Slug, autor y contenido son requeridos' },
         { status: 400 }
       );
     }
 
-    if (author.trim().length > 50) {
+    const slug = sanitizeSlug(rawSlug);
+    if (!slug) {
+      return NextResponse.json({ error: 'Slug inválido' }, { status: 400 });
+    }
+
+    const author = stripHtml(rawAuthor.trim());
+    const content = stripHtml(rawContent.trim());
+
+    if (author.length > 50) {
       return NextResponse.json({ error: 'El nombre es demasiado largo (máx. 50 caracteres)' }, { status: 400 });
     }
 
-    if (content.trim().length > 2000) {
+    if (content.length > 2000) {
       return NextResponse.json({ error: 'El comentario es demasiado largo (máx. 2000 caracteres)' }, { status: 400 });
+    }
+
+    if (content.length === 0 || author.length === 0) {
+      return NextResponse.json({ error: 'Contenido inválido' }, { status: 400 });
     }
 
     const comments = readComments(slug);
 
     const newComment: Comment = {
       id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-      author: author.trim(),
-      content: content.trim(),
+      author,
+      content,
       date: new Date().toISOString(),
       parentId: parentId || null,
     };
@@ -94,11 +145,16 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const slug = searchParams.get('slug');
+    const rawSlug = searchParams.get('slug');
     const id = searchParams.get('id');
 
-    if (!slug || !id) {
+    if (!rawSlug || !id) {
       return NextResponse.json({ error: 'Slug e ID son requeridos' }, { status: 400 });
+    }
+
+    const slug = sanitizeSlug(rawSlug);
+    if (!slug) {
+      return NextResponse.json({ error: 'Slug inválido' }, { status: 400 });
     }
 
     const comments = readComments(slug);
