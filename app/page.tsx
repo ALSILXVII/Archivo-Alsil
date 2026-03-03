@@ -65,16 +65,41 @@ export default function Home() {
           </div>
 
           {/* Categorías */}
-          <nav className="flex gap-2 overflow-x-auto pb-3 border-b border-zinc-800/30 scrollbar-thin">
-            {categories.map(cat => (
-              <a
-                key={cat}
-                href={"/c/" + slugify(cat)}
-                className="whitespace-nowrap text-xs text-zinc-500 hover:text-emerald-400 px-3 py-1.5 rounded-full border border-zinc-800/50 hover:border-emerald-600/25 hover:bg-emerald-500/5 transition-all duration-200"
-              >
-                {cat}
-              </a>
-            ))}
+          <nav className="flex gap-2.5 overflow-x-auto pb-3 scrollbar-thin">
+            {categories.map((cat, i) => {
+              const icons: Record<string, string> = {
+                'Ciencia': '🔬',
+                'Ingeniería': '⚙️',
+                'Política Nacional': '🏛️',
+                'Geopolítica': '🌍',
+                'Música': '🎵',
+                'Fútbol': '⚽',
+                'Arte': '🎨',
+                'Cine': '🎬',
+                'Cultura Pop': '💫',
+              };
+              const colors = [
+                'from-emerald-600/20 to-emerald-800/5 border-emerald-700/25 hover:border-emerald-500/40 hover:from-emerald-600/30 text-emerald-400/80 hover:text-emerald-300',
+                'from-blue-600/20 to-blue-800/5 border-blue-700/25 hover:border-blue-500/40 hover:from-blue-600/30 text-blue-400/80 hover:text-blue-300',
+                'from-red-600/20 to-red-800/5 border-red-700/25 hover:border-red-500/40 hover:from-red-600/30 text-red-400/80 hover:text-red-300',
+                'from-amber-600/20 to-amber-800/5 border-amber-700/25 hover:border-amber-500/40 hover:from-amber-600/30 text-amber-400/80 hover:text-amber-300',
+                'from-purple-600/20 to-purple-800/5 border-purple-700/25 hover:border-purple-500/40 hover:from-purple-600/30 text-purple-400/80 hover:text-purple-300',
+                'from-green-600/20 to-green-800/5 border-green-700/25 hover:border-green-500/40 hover:from-green-600/30 text-green-400/80 hover:text-green-300',
+                'from-pink-600/20 to-pink-800/5 border-pink-700/25 hover:border-pink-500/40 hover:from-pink-600/30 text-pink-400/80 hover:text-pink-300',
+                'from-orange-600/20 to-orange-800/5 border-orange-700/25 hover:border-orange-500/40 hover:from-orange-600/30 text-orange-400/80 hover:text-orange-300',
+                'from-cyan-600/20 to-cyan-800/5 border-cyan-700/25 hover:border-cyan-500/40 hover:from-cyan-600/30 text-cyan-400/80 hover:text-cyan-300',
+              ];
+              return (
+                <a
+                  key={cat}
+                  href={"/c/" + slugify(cat)}
+                  className={`whitespace-nowrap text-xs font-medium px-3.5 py-2 rounded-xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg flex items-center gap-1.5 ${colors[i % colors.length]}`}
+                >
+                  <span className="text-sm">{icons[cat] || '📌'}</span>
+                  {cat}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Destacados */}
