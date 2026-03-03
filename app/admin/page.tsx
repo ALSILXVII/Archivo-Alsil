@@ -169,6 +169,12 @@ export default function AdminPage() {
                   </div>
                   <div className="flex gap-2 shrink-0">
                     <Link
+                      href={`/admin/editar/${post.slug}`}
+                      className="px-3 py-1.5 rounded border border-emerald-800 text-emerald-400 hover:bg-emerald-900/30 text-xs transition"
+                    >
+                      Editar
+                    </Link>
+                    <Link
                       href={`/p/${post.slug}`}
                       className="px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:bg-zinc-800 text-xs transition"
                     >
