@@ -79,16 +79,33 @@ export default function Home() {
 
           {/* Destacados */}
           {featured.length > 0 && (
-            <section>
+            <section className="relative">
+              {/* Section header */}
               <div className="flex items-center gap-3 mb-5">
-                <h2 className="text-[11px] font-semibold uppercase tracking-widest text-emerald-600/50">Destacados</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-emerald-900/20 to-transparent" />
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-500/70 text-sm">★</span>
+                  <h2 className="text-[11px] font-bold uppercase tracking-widest text-amber-500/60">Destacados</h2>
+                </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-amber-700/25 via-amber-900/15 to-transparent" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {featured.map(post => (
-                  <PostCard key={post.slug} post={post} />
-                ))}
-              </div>
+
+              {/* Magazine layout: first post hero, rest compact on the side */}
+              {featured.length === 1 ? (
+                <PostCard post={featured[0]} variant="hero" />
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                  {/* Hero card - takes 3 columns */}
+                  <div className="lg:col-span-3">
+                    <PostCard post={featured[0]} variant="hero" />
+                  </div>
+                  {/* Compact cards stacked - takes 2 columns */}
+                  <div className="lg:col-span-2 flex flex-col gap-3">
+                    {featured.slice(1).map(post => (
+                      <PostCard key={post.slug} post={post} variant="compact" />
+                    ))}
+                  </div>
+                </div>
+              )}
             </section>
           )}
 
